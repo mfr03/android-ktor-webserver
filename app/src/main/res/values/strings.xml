@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WebserverHMI</string>
+    <string name="host_address">Host Address</string>
 </resources>

@@ -8,8 +8,11 @@ import io.ktor.server.netty.NettyApplicationEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ServerManager {
+@Singleton
+class ServerManager @Inject constructor() {
     private val servers = mutableMapOf<
             Int,
             EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>
@@ -18,13 +21,13 @@ class ServerManager {
     private val gracePeriodMills = 1000L
     private val timeoutPeriodMills = 2000L
 
-    fun startServer(port: Int, module: Application.() -> Unit) {
+    fun startServer(host: String, port: Int, module: Application.() -> Unit) {
 
         if (servers.containsKey(port)) {
             throw IllegalStateException("Server is already running on port $port")
         }
 
-        val server = embeddedServer(Netty, port = port, host = "0.0.0.0", module = module)
+        val server = embeddedServer(Netty, port = port, host = host, module = module)
 
         servers[port] = server
         CoroutineScope(Dispatchers.IO).launch {
