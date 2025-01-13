@@ -17,27 +17,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.webserverhmi.R
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 
-@Preview
-@Composable
-fun Preview()
-{
-    WebserverHMITheme {
-        Surface {
-            TextFieldWithString(
-                textFieldValue = "192.168.0.1",
-                forceNumber = false,
-                textFieldOnValueChange = {
-
-                }
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//fun Preview()
+//{
+//    WebserverHMITheme {
+//        Surface {
+//            TextFieldWithString(
+//                textFieldValue = "192.168.0.1",
+//                forceNumber = false,
+//                textFieldOnValueChange = {
+//
+//                }
+//            )
+//        }
+//    }
+//}
 
 @Composable
 fun TextFieldWithString(
                         textFieldValue: String,
                         forceNumber: Boolean,
+                        stringRes: Int,
                         textFieldOnValueChange: (String) -> Unit)
 {
     Surface {
@@ -47,14 +48,14 @@ fun TextFieldWithString(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = stringResource(id = R.string.host_address))
+            Text(text = stringResource(id = stringRes))
 
             if(!forceNumber) {
                 OutlinedTextField(
                     singleLine = true,
                     value = textFieldValue,
                     label = {
-                        Text(text = stringResource(id = R.string.host_address))
+                        Text(text = stringResource(id = stringRes))
                     },
                     onValueChange = { userInput ->
                         textFieldOnValueChange(userInput)
@@ -70,7 +71,7 @@ fun TextFieldWithString(
                         imeAction = ImeAction.Done
                     ),
                     label = {
-                        Text(text = stringResource(id = R.string.host_address))
+                        Text(text = stringResource(id = stringRes))
                     },
                     onValueChange = { userInput ->
                         textFieldOnValueChange(userInput)
