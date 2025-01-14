@@ -1,8 +1,9 @@
-package com.example.webserverhmi.data.home.state
+package com.example.webserverhmi.features.home.viewmodel
+
+import com.example.webserverhmi.data.server.model.WebServer
 
 data class HomeScreenState (
-    val hostAddress: String = "0.0.0.0",
-    val hostPort: String = "8080",
+    val webServer: WebServer = WebServer(),
     val snackbarMessage: String = "",
     val statusState: Boolean = false,
     val postState: Boolean = false,

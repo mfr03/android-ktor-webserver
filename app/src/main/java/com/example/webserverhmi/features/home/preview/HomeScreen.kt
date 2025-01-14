@@ -1,8 +1,5 @@
 package com.example.webserverhmi.features.home.preview
 
-import android.content.res.ColorStateList
-import android.graphics.Paint.Align
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,25 +12,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.webserverhmi.R
-import com.example.webserverhmi.data.home.state.HomeScreenState
+import com.example.webserverhmi.features.home.viewmodel.HomeScreenState
 import com.example.webserverhmi.features.composable.TextFieldWithString
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 
@@ -71,7 +61,7 @@ fun HomeScreen(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextFieldWithString(textFieldValue = homeScreenState.hostAddress, stringRes = R.string.host_address,
+            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostAddress, stringRes = R.string.host_address,
                 forceNumber = false) {
 
             }
@@ -82,7 +72,7 @@ fun HomeScreen(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextFieldWithString(textFieldValue = homeScreenState.hostPort, stringRes = R.string.host_address,
+            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostPort, stringRes = R.string.host_address,
                 forceNumber = true) {
 
             }

@@ -54,16 +54,20 @@ android {
 
 dependencies {
 
-    implementation(libs.nanohttpd)
 
+    // ktor
     implementation (libs.ktor.server.netty)
     implementation (libs.ktor.server.core)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
 
-    implementation("com.google.dagger:hilt-android:2.51.1")
+    // hilt dependency injection
+    implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.compose)
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt(libs.hilt.android.compiler)
+
+    // datastore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

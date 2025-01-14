@@ -39,22 +39,12 @@ class ServerManager @Inject constructor() {
             val server = embeddedServer(Netty, port = port, host = host, module = module)
             servers[port] = server
 
-            CoroutineScope(Dispatchers.IO).launch {
-                server.start(wait = false)
-            }
+            server.start(wait = false)
 
-            return null
-        }  catch (e: BindException) {
-            return "Invalid host address: ${e.message}"
-        }
-        catch (e: IllegalArgumentException) {
-            return "Invalid argument: ${e.message}"
-        } catch (e: ChannelException) {
-            return "Network channel error: ${e.message}"
-        } catch (e: SecurityException) {
-            return "Security error: ${e.message}"
-        } catch (e: Exception) {
-            return "An unexpected error occurred: ${e.message}"
+            return "Attempt to start"
+        }  catch (e: Exception) {
+            servers.remove(port)
+            throw e
         }
     }
 
@@ -70,16 +60,8 @@ class ServerManager @Inject constructor() {
                 return "Server is already stopped."
             }
 
-        } catch (e: IllegalStateException) {
-            return "Illegal state: ${e.message}"
-        } catch (e: TimeoutException) {
-            return "Timeout during shutdown: ${e.message}"
-        } catch (e: IOException) {
-            return "I/O exception: ${e.message}"
-        } catch (e: CancellationException) {
-            return "Shutdown canceled: ${e.message}"
         } catch (e: Exception) {
-            return "Unexpected exception: ${e.message}"
+            throw e
         }
 
     }

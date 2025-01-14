@@ -1,6 +1,5 @@
 package com.example.webserverhmi
 
-import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,45 +13,43 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.webserverhmi.core.application.MainApplication
 import com.example.webserverhmi.core.ktor.ServerManager
-import com.example.webserverhmi.data.home.viewmodel.HomeViewModel
+import com.example.webserverhmi.features.home.viewmodel.HomeViewModel
 import com.example.webserverhmi.features.home.ui.HomeScreen
-import com.example.webserverhmi.core.navigation.NavigationItem
+import com.example.webserverhmi.core.navigation.NavigationItems
+import com.example.webserverhmi.data.server.repository.ServerRepository
 import com.example.webserverhmi.features.composable.NavDrawerItem
+import com.example.webserverhmi.features.export.ExportScreen
+import com.example.webserverhmi.features.routing.RoutingScreen
+import com.example.webserverhmi.features.settings.SettingScreen
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -61,7 +58,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var serverManager: ServerManager
     private val homeViewModel : HomeViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -69,15 +65,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        serverManager = (application as MainApplication).serverManager
-        val navItems = listOf(
-            NavigationItem(
-                title = "Home",
-                route = "Home",
-                selectedIcon = Icons.Default.Home,
-                unselectedIcon = Icons.Outlined.Home,
-            )
-        )
+        val navItems = NavigationItems.navigationItem
 
         setContent {
 
@@ -160,6 +148,9 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable(navItems[0].route) { HomeScreen(viewModel = homeViewModel) }
+                            composable(navItems[1].route) { RoutingScreen() }
+                            composable(navItems[2].route) { ExportScreen() }
+                            composable(navItems[3].route) { SettingScreen() }
                         }
                     }
                 }
