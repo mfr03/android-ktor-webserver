@@ -91,12 +91,12 @@ class ServerManager @Inject constructor() {
 
     fun serverSuccessfullyStarted(host: String, port: Int): String {
         isServerRunning = true
-        return "$host at port $port has successfully started"
+        return "Webserver $host at port $port has successfully started"
     }
 
     fun serverStopped(host: String, port: Int): String {
         isServerRunning = false
-        return "$host at port $port has stopped"
+        return "Webserver $host at port $port has stopped"
     }
 
 

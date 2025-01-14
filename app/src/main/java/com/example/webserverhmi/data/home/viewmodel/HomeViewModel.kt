@@ -126,11 +126,18 @@ class HomeViewModel @Inject constructor(
     }
 
     fun stopServer() {
-        loadingStateUpdate(true)
         viewModelScope.launch(Dispatchers.IO) {
-            serverManager.stopServer(port = _uiState.value.hostPort.toInt())
+            loadingStateUpdate(true)
+            val res = serverManager.stopServer(port = _uiState.value.hostPort.toInt())
 
-            loadingStateUpdate(false)
+            if(res == "Server stopped successfully.") {
+                loadingStateUpdate(false)
+            } else
+            {
+                showSnackbar("No server is running")
+                loadingStateUpdate(false)
+            }
+
         }
     }
 

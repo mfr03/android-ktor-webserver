@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.example.webserverhmi.R
 import com.example.webserverhmi.data.home.state.HomeScreenState
 import com.example.webserverhmi.data.home.viewmodel.HomeViewModel
+import com.example.webserverhmi.features.composable.CircleIndicatorWithText
 import com.example.webserverhmi.features.composable.TextFieldWithString
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,8 +54,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel,
-               innerPaddingValues: PaddingValues
+fun HomeScreen(viewModel: HomeViewModel
 ) {
 
     val homeScreenState by viewModel.uiState.collectAsState()
@@ -74,7 +74,6 @@ fun HomeScreen(viewModel: HomeViewModel,
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPaddingValues)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -143,72 +142,33 @@ fun HomeScreen(viewModel: HomeViewModel,
                     modifier = Modifier
                         .align(Alignment.Bottom),
                     text = "Server Activity")
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "Status")
-                    if(homeScreenState.statusState)
-                    {
-                        Box(
-                            modifier = Modifier
-                                .border(
-                                    width = 8.dp,
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    shape = CircleShape
-                                )
-                                .size(height = 32.dp, width = 32.dp)
-                                .background(MaterialTheme.colorScheme.primary, shape = CircleShape)
-                        )
-                    } else
-                    {
-                        Box(
-                            modifier = Modifier
-                                .border(
-                                    width = 8.dp,
-                                    color = MaterialTheme.colorScheme.errorContainer,
-                                    shape = CircleShape
-                                )
-                                .size(height = 32.dp, width = 32.dp)
-                                .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                        )
-                    }
 
-                }
+                CircleIndicatorWithText(
+                    indicatorText = "Status",
+                    primaryBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    primaryBackgroundColor = MaterialTheme.colorScheme.primary,
+                    errorBorderColor = MaterialTheme.colorScheme.errorContainer,
+                    errorBackgroundColor = MaterialTheme.colorScheme.error,
+                    statusState = homeScreenState.statusState
+                )
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "POST")
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 4.dp,
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = CircleShape
-                            )
-                            .size(height = 32.dp, width = 32.dp)
-                            .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                    )
-                }
+                CircleIndicatorWithText(
+                    indicatorText = "POST",
+                    primaryBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    primaryBackgroundColor = MaterialTheme.colorScheme.primary,
+                    errorBorderColor = MaterialTheme.colorScheme.errorContainer,
+                    errorBackgroundColor = MaterialTheme.colorScheme.error,
+                    statusState = homeScreenState.postState
+                )
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "GET")
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 4.dp,
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = CircleShape
-                            )
-                            .size(height = 32.dp, width = 32.dp)
-                            .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                    )
-                }
+                CircleIndicatorWithText(
+                    indicatorText = "GET",
+                    primaryBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                    primaryBackgroundColor = MaterialTheme.colorScheme.primary,
+                    errorBorderColor = MaterialTheme.colorScheme.errorContainer,
+                    errorBackgroundColor = MaterialTheme.colorScheme.error,
+                    statusState = homeScreenState.getState
+                )
             }
 
 
