@@ -1,22 +1,14 @@
 package com.example.webserverhmi.features.home.viewmodel
 
-import io.ktor.server.application.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.webserverhmi.core.ktor.ServerManager
-import com.example.webserverhmi.core.ktor.configureRouting
-import com.example.webserverhmi.core.ktor.configureSerialization
 import com.example.webserverhmi.data.server.model.WebServer
 import com.example.webserverhmi.data.server.repository.ServerRepository
+import com.example.webserverhmi.data.server.repository.ServerRepositoryImplementation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.NetworkInterface
 import javax.inject.Inject
 
 
@@ -55,8 +47,6 @@ class HomeViewModel @Inject constructor(
                 hostAddressUpdate("0.0.0.0")
             }
         }
-
-
     }
 
     fun hostAddressUpdate(newAddress: String) {

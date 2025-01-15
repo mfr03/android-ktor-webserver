@@ -40,15 +40,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.webserverhmi.core.application.MainApplication
-import com.example.webserverhmi.core.ktor.ServerManager
 import com.example.webserverhmi.features.home.viewmodel.HomeViewModel
 import com.example.webserverhmi.features.home.ui.HomeScreen
 import com.example.webserverhmi.core.navigation.NavigationItems
-import com.example.webserverhmi.data.server.repository.ServerRepository
 import com.example.webserverhmi.features.composable.NavDrawerItem
 import com.example.webserverhmi.features.export.ExportScreen
-import com.example.webserverhmi.features.routing.RoutingScreen
+import com.example.webserverhmi.features.routing.ui.RoutingScreen
+import com.example.webserverhmi.features.routing.viewmodel.RoutingScreenViewModel
 import com.example.webserverhmi.features.settings.SettingScreen
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,6 +57,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private val homeViewModel : HomeViewModel by viewModels()
+    private val routingScreenViewModel: RoutingScreenViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,7 +147,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable(navItems[0].route) { HomeScreen(viewModel = homeViewModel) }
-                            composable(navItems[1].route) { RoutingScreen() }
+                            composable(navItems[1].route) { RoutingScreen(viewModel = routingScreenViewModel) }
                             composable(navItems[2].route) { ExportScreen() }
                             composable(navItems[3].route) { SettingScreen() }
                         }
