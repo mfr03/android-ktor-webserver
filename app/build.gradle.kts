@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -64,10 +66,12 @@ dependencies {
     // hilt dependency injection
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.compiler)
 
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

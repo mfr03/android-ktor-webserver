@@ -37,10 +37,11 @@ fun HomeScreen(viewModel: HomeViewModel
 ) {
 
     val homeScreenState by viewModel.uiState.collectAsState()
+    val userWebServerSettings by viewModel.userWebServerSettings.collectAsState()
 
     LaunchedEffect(homeScreenState) {
-        Log.d("HomeScreen", "Host Address: ${homeScreenState.webServer.hostAddress}," +
-                " Host Port: ${homeScreenState.webServer.hostPort}")
+        Log.d("HomeScreen", "Host Address: ${userWebServerSettings.hostAddress}," +
+                " Host Port: ${userWebServerSettings.hostPort}")
     }
 
     Box(
@@ -62,7 +63,7 @@ fun HomeScreen(viewModel: HomeViewModel
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextFieldWithString(textFieldValue = homeScreenState.webServer.hostAddress, stringRes = R.string.host_address,
+                TextFieldWithString(textFieldValue = userWebServerSettings.hostAddress, stringRes = R.string.host_address,
                     forceNumber = false) { newAddress ->
                     viewModel.hostAddressUpdate(newAddress = newAddress)
                 }
@@ -73,7 +74,7 @@ fun HomeScreen(viewModel: HomeViewModel
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextFieldWithString(textFieldValue = homeScreenState.webServer.hostPort, stringRes = R.string.host_port,
+                TextFieldWithString(textFieldValue = userWebServerSettings.hostPort, stringRes = R.string.host_port,
                     forceNumber = true) { newPort ->
                     viewModel.hostPortUpdate(newPort)
 

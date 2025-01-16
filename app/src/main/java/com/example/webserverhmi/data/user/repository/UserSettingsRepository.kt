@@ -1,6 +1,8 @@
 package com.example.webserverhmi.data.user.repository
 
+import com.example.webserverhmi.data.user.model.UserSettings
+
 interface UserSettingsRepository {
-    suspend fun getUserRouting(): List<String>
-    suspend fun saveUserRouting(routing: List<String>)
+    suspend fun getUserSettings(): UserSettings
+    suspend fun saveUserSettings(update: (UserSettings) -> UserSettings)
 }

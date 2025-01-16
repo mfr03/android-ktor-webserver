@@ -1,24 +1,58 @@
 package com.example.webserverhmi.features.home.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.webserverhmi.data.server.model.WebServer
 import com.example.webserverhmi.data.server.repository.ServerRepository
 import com.example.webserverhmi.data.server.repository.ServerRepositoryImplementation
+import com.example.webserverhmi.data.user.model.UserSettings
+import com.example.webserverhmi.data.user.repository.UserSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val serverRepository: ServerRepository
+    private val serverRepository: ServerRepository,
+    private val userSettingsRepository: UserSettingsRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenState())
     val uiState: StateFlow<HomeScreenState> = _uiState.asStateFlow()
+
+    private val _userSettings = MutableStateFlow(UserSettings())
+    private val userSettings: StateFlow<UserSettings> = _userSettings.asStateFlow()
+
+    val userWebServerSettings: StateFlow<WebServer> = userSettings.map { it.userWebServerSettings }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, WebServer())
+
+    init {
+        fetchUserSettings()
+    }
+
+    private fun fetchUserSettings() {
+        viewModelScope.launch {
+            _userSettings.value = userSettingsRepository.getUserSettings()
+        }
+    }
+
+    fun updateUserWebserverSettings(webserverSettings: WebServer) {
+        viewModelScope.launch {
+            userSettingsRepository.saveUserSettings { preferences ->
+                preferences.copy(userWebServerSettings = webserverSettings)
+            }
+        }
+        fetchUserSettings()
+    }
+
 
 
     fun showSnackbar(message: String)
@@ -37,7 +71,6 @@ class HomeViewModel @Inject constructor(
 
     suspend fun getLocalIp()
     {
-
         when(val result = serverRepository.getLocalIp()) {
             result -> {
                 hostAddressUpdate(result.getOrDefault("0.0.0.0"))
@@ -50,21 +83,19 @@ class HomeViewModel @Inject constructor(
     }
 
     fun hostAddressUpdate(newAddress: String) {
-        _uiState.value = _uiState.value.copy(
-            webServer = WebServer(
-                hostAddress = newAddress,
-                hostPort = _uiState.value.webServer.hostPort
+        _userSettings.update { userSettings ->
+            userSettings.copy(userWebServerSettings =
+            WebServer(newAddress, _userSettings.value.userWebServerSettings.hostPort)
             )
-        )
+        }
     }
 
     fun hostPortUpdate(newPort: String) {
-        _uiState.value = _uiState.value.copy(
-            webServer = WebServer(
-                hostAddress = _uiState.value.webServer.hostAddress,
-                hostPort = newPort
+        _userSettings.update { userSettings ->
+            userSettings.copy(userWebServerSettings =
+            WebServer(_userSettings.value.userWebServerSettings.hostAddress, newPort)
             )
-        )
+        }
     }
 
     private fun statusStateUpdate(statusState: Boolean) {
@@ -82,8 +113,8 @@ class HomeViewModel @Inject constructor(
 
     suspend fun startServer() {
 
-        val host = _uiState.value.webServer.hostAddress
-        val port = _uiState.value.webServer.hostPort.toIntOrNull() ?: return
+        val host = _userSettings.value.userWebServerSettings.hostAddress
+        val port = _userSettings.value.userWebServerSettings.hostPort.toIntOrNull() ?: return
 
         loadingStateUpdate(true)
 
@@ -101,13 +132,13 @@ class HomeViewModel @Inject constructor(
         }
 
         loadingStateUpdate(false)
-
+        updateUserWebserverSettings(_userSettings.value.userWebServerSettings)
     }
 
     suspend fun stopServer() {
         loadingStateUpdate(true)
 
-        val result = serverRepository.stopServer(_uiState.value.webServer.hostPort.toInt())
+        val result = serverRepository.stopServer(_userSettings.value.userWebServerSettings.hostPort.toInt())
 
         if(result.isSuccess){
             if(result.getOrNull() == "Server stopped successfully.") {

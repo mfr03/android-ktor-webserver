@@ -28,121 +28,121 @@ import com.example.webserverhmi.features.composable.TextFieldWithString
 import com.example.webserverhmi.ui.theme.WebserverHMITheme
 
 
-@Preview(showBackground = true, showSystemUi = true)
-@PreviewLightDark
-@Composable
-fun HomeScreenPreview()
-{
-    WebserverHMITheme {
-        Scaffold(
-            content = { paddingValues ->
-                HomeScreen(innerPaddingValues = paddingValues)
-            }
-        )
-    }
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@PreviewLightDark
+//@Composable
+//fun HomeScreenPreview()
+//{
+//    WebserverHMITheme {
+//        Scaffold(
+//            content = { paddingValues ->
+//                HomeScreen(innerPaddingValues = paddingValues)
+//            }
+//        )
+//    }
+//}
 
 
-@Composable
-fun HomeScreen(
-               innerPaddingValues: PaddingValues
-) {
-    val homeScreenState = HomeScreenState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPaddingValues)
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostAddress, stringRes = R.string.host_address,
-                forceNumber = false) {
-
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostPort, stringRes = R.string.host_address,
-                forceNumber = true) {
-
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            OutlinedButton(onClick = {
-
-            }) {
-                Text(text = "Get Machine Local IP Address")
-            }
-            OutlinedButton(onClick = {
-
-            }) {
-                Text(text = "Start Server")
-            }
-        }
-
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
-        ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Bottom),
-                text = "Server Activity")
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "Status")
-                Box(
-                    modifier = Modifier
-                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
-                        .size(height = 32.dp, width = 32.dp)
-                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "POST")
-                Box(
-                    modifier = Modifier
-                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
-                        .size(height = 32.dp, width = 32.dp)
-                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "GET")
-                Box(
-                    modifier = Modifier
-                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
-                        .size(height = 32.dp, width = 32.dp)
-                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
-                )
-            }
-        }
-    }
-}
+//@Composable
+//fun HomeScreen(
+//               innerPaddingValues: PaddingValues
+//) {
+//    val homeScreenState = HomeScreenState()
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(innerPaddingValues)
+//            .padding(horizontal = 16.dp),
+//        verticalArrangement = Arrangement.spacedBy(16.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostAddress, stringRes = R.string.host_address,
+//                forceNumber = false) {
+//
+//            }
+//        }
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            TextFieldWithString(textFieldValue = homeScreenState.webServer.hostPort, stringRes = R.string.host_address,
+//                forceNumber = true) {
+//
+//            }
+//        }
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceAround
+//        ) {
+//            OutlinedButton(onClick = {
+//
+//            }) {
+//                Text(text = "Get Machine Local IP Address")
+//            }
+//            OutlinedButton(onClick = {
+//
+//            }) {
+//                Text(text = "Start Server")
+//            }
+//        }
+//
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+//        ) {
+//            Text(
+//                modifier = Modifier
+//                    .align(Alignment.Bottom),
+//                text = "Server Activity")
+//            Column(
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(text = "Status")
+//                Box(
+//                    modifier = Modifier
+//                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
+//                        .size(height = 32.dp, width = 32.dp)
+//                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
+//                )
+//            }
+//
+//            Column(
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(text = "POST")
+//                Box(
+//                    modifier = Modifier
+//                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
+//                        .size(height = 32.dp, width = 32.dp)
+//                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
+//                )
+//            }
+//
+//            Column(
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(text = "GET")
+//                Box(
+//                    modifier = Modifier
+//                        .border(width = 8.dp, color = MaterialTheme.colorScheme.errorContainer, shape = CircleShape)
+//                        .size(height = 32.dp, width = 32.dp)
+//                        .background(MaterialTheme.colorScheme.error, shape = CircleShape)
+//                )
+//            }
+//        }
+//    }
+//}
