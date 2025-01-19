@@ -64,7 +64,7 @@ fun HomeScreen(viewModel: HomeViewModel
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextFieldWithString(textFieldValue = userWebServerSettings.hostAddress, stringRes = R.string.host_address,
-                    forceNumber = false) { newAddress ->
+                    isNumberKeyboard = false) { newAddress ->
                     viewModel.hostAddressUpdate(newAddress = newAddress)
                 }
             }
@@ -75,7 +75,7 @@ fun HomeScreen(viewModel: HomeViewModel
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextFieldWithString(textFieldValue = userWebServerSettings.hostPort, stringRes = R.string.host_port,
-                    forceNumber = true) { newPort ->
+                    isNumberKeyboard = true) { newPort ->
                     viewModel.hostPortUpdate(newPort)
 
                 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.webserverhmi.features.composable.RoutingDialog
 import com.example.webserverhmi.features.composable.RoutingItem
 import com.example.webserverhmi.features.routing.viewmodel.RoutingScreenViewModel
 
@@ -17,6 +18,7 @@ import com.example.webserverhmi.features.routing.viewmodel.RoutingScreenViewMode
 fun RoutingScreen(viewModel: RoutingScreenViewModel)
 {
     val userRouting by viewModel.userRouting.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -26,8 +28,14 @@ fun RoutingScreen(viewModel: RoutingScreenViewModel)
         LazyColumn {
             userRouting.forEach { routing ->
                 item {
-                    RoutingItem(routing = routing, routingType = "POST")
+                    RoutingItem(routing = routing.first, routingType = routing.second)
                 }
+            }
+        }
+
+        if(uiState.dialogState) {
+            RoutingDialog {
+                viewModel.updateDialogState(false)
             }
         }
     }

@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
@@ -30,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -66,11 +69,12 @@ class MainActivity : ComponentActivity() {
 
         val navItems = NavigationItems.navigationItem
 
-        setContent {
 
+        setContent {
 
             WebserverHMITheme {
                 val navController = rememberNavController()
+                var currentNavIndex by remember { mutableIntStateOf(0) }
 
                 val homeScreenState by homeViewModel.uiState.collectAsState()
                 val snackbarHostState = remember { SnackbarHostState() }
@@ -80,6 +84,8 @@ class MainActivity : ComponentActivity() {
                 var selectedItemIndex by rememberSaveable {
                     mutableIntStateOf(0)
                 }
+
+
 
                 LaunchedEffect(homeScreenState.snackbarMessage) {
                     homeScreenState.let {
@@ -108,6 +114,7 @@ class MainActivity : ComponentActivity() {
                                         scope.launch {
                                             drawerState.close()
                                         }
+                                        currentNavIndex = index
                                         navController.navigate(navigationItem.route)
                                     }
                                 }
@@ -120,7 +127,9 @@ class MainActivity : ComponentActivity() {
                             .imePadding(),
                         topBar = {
                             TopAppBar(
-                                title = { Text("Home") },
+                                title = {
+                                            Text(navItems[currentNavIndex].title)
+                                        },
                                 navigationIcon = {
                                     IconButton(onClick = {
                                         scope.launch { drawerState.open()  }
@@ -131,6 +140,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         },
+
                         snackbarHost = {
                             Box(modifier = Modifier.fillMaxSize()) {
                                 SnackbarHost(
@@ -139,7 +149,18 @@ class MainActivity : ComponentActivity() {
                                         .offset(y = (-16).dp),
                                     hostState = snackbarHostState)
                             }
+                        },
+
+                        floatingActionButton = {
+                            if(navItems[currentNavIndex].route == navItems[1].route) {
+                                FloatingActionButton(
+                                    onClick = {
+                                        routingScreenViewModel.updateDialogState(true)
+                                    }
+                                ) { Icon(Icons.Filled.Add, "Add Routing")}
+                            }
                         }
+
                     ) { innerPadding ->
                         NavHost(
                             navController = navController,

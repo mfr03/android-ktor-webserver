@@ -44,16 +44,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateUserWebserverSettings(webserverSettings: WebServer) {
+    private fun updateUserWebserverSettings(webserverSettings: WebServer) {
         viewModelScope.launch {
             userSettingsRepository.saveUserSettings { preferences ->
                 preferences.copy(userWebServerSettings = webserverSettings)
             }
+            fetchUserSettings()
         }
-        fetchUserSettings()
     }
-
-
 
     fun showSnackbar(message: String)
     {
@@ -131,8 +129,8 @@ class HomeViewModel @Inject constructor(
             showSnackbar("Error starting server: ${result.exceptionOrNull()?.message}")
         }
 
-        loadingStateUpdate(false)
         updateUserWebserverSettings(_userSettings.value.userWebServerSettings)
+        loadingStateUpdate(false)
     }
 
     suspend fun stopServer() {

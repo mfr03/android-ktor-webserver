@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserSettings(
     val userWebServerSettings: WebServer = WebServer(),
-    val routings: List<String> = listOf("/"),
+    val routings: List<Pair<String, String>> = listOf(Pair("/", "GET")),
 )

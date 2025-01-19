@@ -13,9 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.webserverhmi.R
-import com.example.webserverhmi.ui.theme.WebserverHMITheme
 
 //@Preview
 //@Composable
@@ -36,10 +33,10 @@ import com.example.webserverhmi.ui.theme.WebserverHMITheme
 
 @Composable
 fun TextFieldWithString(
-                        textFieldValue: String,
-                        forceNumber: Boolean,
-                        stringRes: Int,
-                        textFieldOnValueChange: (String) -> Unit)
+    textFieldValue: String,
+    isNumberKeyboard: Boolean,
+    stringRes: Int,
+    textFieldOnValueChange: (String) -> Unit)
 {
     Surface {
         Row(
@@ -50,7 +47,7 @@ fun TextFieldWithString(
         ) {
             Text(text = stringResource(id = stringRes))
 
-            if(!forceNumber) {
+            if(!isNumberKeyboard) {
                 OutlinedTextField(
                     singleLine = true,
                     value = textFieldValue,

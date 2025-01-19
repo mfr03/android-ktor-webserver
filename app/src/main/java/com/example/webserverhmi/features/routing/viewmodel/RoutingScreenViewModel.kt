@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,11 +21,15 @@ import javax.inject.Inject
 class RoutingScreenViewModel @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository
 ): ViewModel() {
-    private val _userSettings = MutableStateFlow(UserSettings())
-    private val userSettings: StateFlow<UserSettings> = _userSettings
 
-    val userRouting: StateFlow<List<String>> = userSettings.map { it.routings}
-        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf("/"))
+    private val _uiState = MutableStateFlow(RoutingScreenState())
+    val uiState: StateFlow<RoutingScreenState> = _uiState.asStateFlow()
+
+    private val _userSettings = MutableStateFlow(UserSettings())
+    private val userSettings: StateFlow<UserSettings> = _userSettings.asStateFlow()
+
+    val userRouting: StateFlow<List<Pair<String, String>>> = userSettings.map { it.routings}
+        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf(Pair("/", "GET")))
 
     init {
         fetchUserSettings()
@@ -36,12 +41,20 @@ class RoutingScreenViewModel @Inject constructor(
         }
     }
 
-    fun updateUserRouting(routing: List<String>) {
+    fun updateUserRouting(routing: List<Pair<String, String>>) {
         viewModelScope.launch {
             userSettingsRepository.saveUserSettings { preferences ->
                 preferences.copy(routings = routing)
             }
             fetchUserSettings()
+        }
+    }
+
+    fun updateDialogState(newState: Boolean) {
+        _uiState.update { uiState ->
+            uiState.copy(
+                dialogState = newState
+            )
         }
     }
 
